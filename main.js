@@ -698,7 +698,7 @@ var LoadingComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<mat-toolbar color=\"primary\">\r\n  <mat-toolbar-row>\r\n    <span class=\"example-spacer\">loginmmmm</span>\r\n  </mat-toolbar-row>\r\n</mat-toolbar>\r\n<div class=\"center\">\r\n  <mat-card class=\"example-card\">\r\n    <mat-card-header>\r\n      <div mat-card-avatar class=\"example-header-image\"></div>\r\n    </mat-card-header>\r\n    <mat-card-content>\r\n      <mat-list role=\"list\">\r\n        <mat-list-item role=\"listitem\">\r\n          用户：<input matInput [(ngModel)]=\"user\" name=\"user\" placeholder=\"请输入用户名\" autocomplete=\"false\">\r\n        </mat-list-item>\r\n        <mat-list-item role=\"listitem\">\r\n          密码：<input matInput [(ngModel)]=\"password\" name=\"password\" placeholder=\"请输入密码\" autocomplete=\"false\">\r\n        </mat-list-item>\r\n        <mat-list-item role=\"listitem\">\r\n          <button mat-button (click)=\"login()\">login</button>\r\n        </mat-list-item>\r\n      </mat-list>\r\n    </mat-card-content>\r\n  </mat-card>\r\n</div>"
+module.exports = "\r\n<mat-toolbar color=\"primary\">\r\n  <mat-toolbar-row>\r\n    <span class=\"example-spacer\">认证登录</span>\r\n  </mat-toolbar-row>\r\n</mat-toolbar>\r\n<div class=\"center\">\r\n  <mat-card class=\"example-card\">\r\n    <mat-card-header>\r\n      <div mat-card-avatar class=\"example-header-image\"></div>\r\n    </mat-card-header>\r\n    <mat-card-content>\r\n      <mat-list role=\"list\">\r\n        <mat-list-item role=\"listitem\">\r\n          用户：<input matInput [(ngModel)]=\"user\" name=\"user\" placeholder=\"请输入用户名\" autocomplete=\"false\">\r\n        </mat-list-item>\r\n        <mat-list-item role=\"listitem\">\r\n          密码：<input matInput [(ngModel)]=\"password\" name=\"password\" placeholder=\"请输入密码\" autocomplete=\"false\">\r\n        </mat-list-item>\r\n        <mat-list-item role=\"listitem\">\r\n          <button mat-button (click)=\"login()\">login</button>\r\n        </mat-list-item>\r\n      </mat-list>\r\n    </mat-card-content>\r\n  </mat-card>\r\n</div>"
 
 /***/ }),
 
@@ -918,7 +918,7 @@ __webpack_require__.r(__webpack_exports__);
 var environment = {
     production: false,
     baseUrl: 'https://moly.ngrok2.xiaomiqiu.cn/',
-    basesocket: 'ws://moly.ngrok2.xiaomiqiu.cn/'
+    basesocket: 'wss://moly.ngrok2.xiaomiqiu.cn/'
 };
 /*
  * For easier debugging in development mode, you can import the following file
