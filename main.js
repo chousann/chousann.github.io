@@ -754,6 +754,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_localstorage_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./service/localstorage.service */ "./src/app/service/localstorage.service.ts");
 /* harmony import */ var _common_tabs_tabs_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./common/tabs/tabs.component */ "./src/app/common/tabs/tabs.component.ts");
 /* harmony import */ var _tab_tab_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./tab/tab.component */ "./src/app/tab/tab.component.ts");
+/* harmony import */ var ng_zorro_antd_mobile__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ng-zorro-antd-mobile */ "./node_modules/ng-zorro-antd-mobile/fesm5/ng-zorro-antd-mobile.js");
+/* harmony import */ var _common_anttabs_anttabs_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./common/anttabs/anttabs.component */ "./src/app/common/anttabs/anttabs.component.ts");
+
+
 
 
 
@@ -780,7 +784,9 @@ var appRoutes = [
     }, {
         path: 'users', component: _selectuser_selectuser_component__WEBPACK_IMPORTED_MODULE_13__["SelectuserComponent"]
     }, {
-        path: 'tabs', component: _common_tabs_tabs_component__WEBPACK_IMPORTED_MODULE_15__["TabsComponent"]
+        path: 'tabs', component: _common_anttabs_anttabs_component__WEBPACK_IMPORTED_MODULE_18__["AnttabsComponent"]
+    }, {
+        path: 'anttabs', component: _common_tabs_tabs_component__WEBPACK_IMPORTED_MODULE_15__["TabsComponent"]
     },
 ];
 var AppModule = /** @class */ (function () {
@@ -795,7 +801,8 @@ var AppModule = /** @class */ (function () {
                 _chat_chat_component__WEBPACK_IMPORTED_MODULE_12__["ChatComponent"],
                 _selectuser_selectuser_component__WEBPACK_IMPORTED_MODULE_13__["SelectuserComponent"],
                 _common_tabs_tabs_component__WEBPACK_IMPORTED_MODULE_15__["TabsComponent"],
-                _tab_tab_component__WEBPACK_IMPORTED_MODULE_16__["TabComponent"]
+                _tab_tab_component__WEBPACK_IMPORTED_MODULE_16__["TabComponent"],
+                _common_anttabs_anttabs_component__WEBPACK_IMPORTED_MODULE_18__["AnttabsComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -817,6 +824,7 @@ var AppModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_6__["MatSnackBarModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_6__["MatTabsModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_6__["MatSidenavModule"],
+                ng_zorro_antd_mobile__WEBPACK_IMPORTED_MODULE_17__["NgZorroAntdMobileModule"],
                 _angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterModule"].forRoot(appRoutes, { enableTracing: false } // <-- debugging purposes only
                 )
             ],
@@ -890,9 +898,9 @@ var ChatComponent = /** @class */ (function () {
     ChatComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.toUser = this.activatedRoute.snapshot.params['id'];
-        this.msgList = this.localstorage.getArr(this.toUser);
+        this.msgList = this.localstorage.getArr(this.localstorage.get('authToken') + this.toUser);
         this.localstorage.msgEvent.subscribe(function () {
-            _this.msgList = _this.localstorage.getArr(_this.toUser);
+            _this.msgList = _this.localstorage.getArr(_this.localstorage.get('authToken') + _this.toUser);
         });
     };
     ChatComponent.prototype.onmsg = function (msg) {
@@ -909,7 +917,7 @@ var ChatComponent = /** @class */ (function () {
                 return;
             }
             _this.msgList.push(msg);
-            _this.localstorage.setArr(_this.toUser, _this.msgList);
+            _this.localstorage.setArr(_this.localstorage.get('authToken') + _this.toUser, _this.msgList);
             _this.msg = null;
         }).catch(function (msg) {
             _this.openSnackBar("用户未登录，无法接收信息", "Dance");
@@ -925,7 +933,7 @@ var ChatComponent = /** @class */ (function () {
         });
     };
     ChatComponent.prototype.delete = function () {
-        this.localstorage.remove(this.toUser);
+        this.localstorage.remove(this.localstorage.get('authToken') + this.toUser);
         this.msgList = new Array();
         this.openSnackBar("聊天记录已被清空", "");
     };
@@ -942,6 +950,109 @@ var ChatComponent = /** @class */ (function () {
             _angular_material__WEBPACK_IMPORTED_MODULE_5__["MatSnackBar"]])
     ], ChatComponent);
     return ChatComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/common/anttabs/anttabs.component.html":
+/*!*******************************************************!*\
+  !*** ./src/app/common/anttabs/anttabs.component.html ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<TabBar [hidden]=\"hidden\" [barTintColor]=\"'white'\" [tintColor]=\"tintColor\" [ngStyle]=\"tabbarStyle\"\n  [activeTab]=\"selectedIndex\" [unselectedTintColor]=\"unselectedTintColor\" [tabBarPosition]=\"topFlag ? 'top' : 'bottom'\"\n  (onPress)=\"tabBarTabOnPress($event)\">\n  <TabBarItem [title]=\"'消息'\" [key]=\"1\" [dot]=\"true\" [icon]=\"icon1\" [selectedIcon]=\"icon11\">\n    <ng-template #icon1>\n      <mat-icon>face</mat-icon>\n    </ng-template>\n    <ng-template #icon11>\n      <mat-icon>face</mat-icon>\n    </ng-template>\n    <app-selectuser></app-selectuser>\n  </TabBarItem>\n  <TabBarItem [title]=\"'购物'\" [key]=\"2\" [badge]=\"false\" [icon]=\"icon2\" [selectedIcon]=\"icon22\">\n    <ng-template #icon2>\n      <mat-icon>local_mall</mat-icon>\n    </ng-template>\n    <ng-template #icon22>\n      <mat-icon>local_mall</mat-icon>\n    </ng-template>\n    <app-tab></app-tab>\n  </TabBarItem>\n  <TabBarItem [title]=\"'发现'\" [key]=\"3\" [badge]=\"false\" [icon]=\"icon3\" [selectedIcon]=\"icon33\">\n    <ng-template #icon3>\n      <div\n        style=\"width:24px;height: 24px;background: url('https://zos.alipayobjects.com/rmsportal/sifuoDUQdAFKAVcFGROC.svg') center center / 21px 21px no-repeat;\">\n      </div>\n    </ng-template>\n    <ng-template #icon33>\n      <div\n        style=\"width:24px;height: 24px;background: url('https://zos.alipayobjects.com/rmsportal/iSrlOTqrKddqbOmlvUfq.svg') center center / 21px 21px no-repeat;\">\n      </div>\n    </ng-template>\n    <div style=\"background-color: white; height: 100%; text-align: center\">\n      <div style=\"padding-top: 60px\">Clicked Friend tab， show Friend information</div>\n      <ng-container>\n        <ng-template [ngTemplateOutlet]=\"content\"></ng-template>\n      </ng-container>\n    </div>\n  </TabBarItem>\n  <TabBarItem [title]=\"'我'\" [key]=\"4\" [icon]=\"icon4\" [selectedIcon]=\"icon44\">\n    <ng-template #icon4>\n      <mat-icon>account_circle</mat-icon>\n    </ng-template>\n    <ng-template #icon44>\n      <mat-icon>account_circle</mat-icon>\n    </ng-template>\n    <mat-toolbar color=\"primary\">\n      <mat-toolbar-row>\n        <mat-icon class=\"example-icon example-spacer\"></mat-icon>\n        <span class=\"example-spacer\">我</span>\n        <mat-icon class=\"example-icon\"></mat-icon>\n      </mat-toolbar-row>\n    </mat-toolbar>\n    <div class=\"example-button-row\">\n      <button mat-raised-button (click)=\"reconnect()\">重新连接</button>\n      <button mat-raised-button color=\"primary\" (click)=\"deleteall()\">清空缓存</button>\n      <button mat-raised-button color=\"accent\">Accent</button>\n      <button mat-raised-button color=\"warn\">Warn</button>\n      <button mat-raised-button disabled>Disabled</button>\n      <a mat-raised-button routerLink=\".\">Link</a>\n    </div>\n  </TabBarItem>\n</TabBar>\n<ng-template #content>\n  <a style=\"display: block; margin-top: 40px; margin-bottom: 20px; color: #108ee9\" (click)=\"showNextTabBar($event)\">\n    Click to next tab-bar\n  </a>\n  <a style=\"display: block; margin-top: 20px; margin-bottom: 20px; color: #108ee9\" (click)=\"showTabBar($event)\">\n    Click to show/hide tab-bar\n  </a>\n  <a style=\"display: block; margin-top: 20px; margin-bottom: 20px; color: #108ee9\" (click)=\"changePosition($event)\">\n    Click to change tab-bar position top/bottom\n  </a>\n  <a style=\"display: block; margin-bottom: 60px; color: #108ee9\" (click)=\"showFullScreen($event)\">\n    Click to switch fullscreen\n  </a>\n</ng-template>"
+
+/***/ }),
+
+/***/ "./src/app/common/anttabs/anttabs.component.scss":
+/*!*******************************************************!*\
+  !*** ./src/app/common/anttabs/anttabs.component.scss ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbW1vbi9hbnR0YWJzL2FudHRhYnMuY29tcG9uZW50LnNjc3MifQ== */"
+
+/***/ }),
+
+/***/ "./src/app/common/anttabs/anttabs.component.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/common/anttabs/anttabs.component.ts ***!
+  \*****************************************************/
+/*! exports provided: AnttabsComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnttabsComponent", function() { return AnttabsComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var AnttabsComponent = /** @class */ (function () {
+    function AnttabsComponent() {
+        this.hidden = false;
+        this.fullScreen = true;
+        this.topFlag = false;
+        this.tintColor = '#108ee9';
+        this.unselectedTintColor = '#888';
+        this.tabbarStyle = {
+            position: 'fixed',
+            height: '100%',
+            width: '100%',
+            top: 0
+        };
+        this.selectedIndex = 0;
+    }
+    AnttabsComponent.prototype.ngOnInit = function () {
+    };
+    AnttabsComponent.prototype.showTabBar = function (event) {
+        event.preventDefault();
+        this.hidden = !this.hidden;
+    };
+    AnttabsComponent.prototype.showNextTabBar = function (event) {
+        event.preventDefault();
+        var PANE_COUNT = 4;
+        if (this.selectedIndex == PANE_COUNT - 1) {
+            this.selectedIndex = 0;
+        }
+        else {
+            this.selectedIndex++;
+        }
+        console.log('selectedIndex: ', this.selectedIndex);
+    };
+    AnttabsComponent.prototype.showFullScreen = function (event) {
+        event.preventDefault();
+        this.fullScreen = !this.fullScreen;
+        this.tabbarStyle = this.fullScreen
+            ? {
+                position: 'fixed',
+                height: '100%',
+                width: '100%',
+                top: 0
+            }
+            : { height: '400px' };
+    };
+    AnttabsComponent.prototype.changePosition = function (event) {
+        event.preventDefault();
+        this.topFlag = !this.topFlag;
+    };
+    AnttabsComponent.prototype.tabBarTabOnPress = function (pressParam) {
+        console.log('onPress Params: ', pressParam);
+        this.selectedIndex = pressParam.index;
+    };
+    AnttabsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-anttabs',
+            template: __webpack_require__(/*! ./anttabs.component.html */ "./src/app/common/anttabs/anttabs.component.html"),
+            styles: [__webpack_require__(/*! ./anttabs.component.scss */ "./src/app/common/anttabs/anttabs.component.scss")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], AnttabsComponent);
+    return AnttabsComponent;
 }());
 
 
@@ -1011,7 +1122,7 @@ var LoadingComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-tab-group headerPosition=\"below\" animationDuration=\"0ms\">\n  <mat-tab label=\"通讯录\">\n    <ng-template mat-tab-label>\n      <mat-icon class=\"example-tab-icon\">forum</mat-icon>\n    </ng-template>\n    <app-selectuser></app-selectuser>\n  </mat-tab>\n  <mat-tab label=\"发现\">\n    <ng-template mat-tab-label>\n      <mat-icon class=\"example-tab-icon\">assistant</mat-icon>\n    </ng-template>\n    <app-tab></app-tab>\n  </mat-tab>\n  <mat-tab label=\"我\">\n    <ng-template mat-tab-label>\n      <mat-icon class=\"example-tab-icon\">account_box</mat-icon>\n    </ng-template>\n    <mat-toolbar color=\"primary\">\n      <mat-toolbar-row>\n        <mat-icon class=\"example-icon example-spacer\"></mat-icon>\n        <span class=\"example-spacer\">我</span>\n        <mat-icon class=\"example-icon\"></mat-icon>\n      </mat-toolbar-row>\n    </mat-toolbar>\n    <div class=\"example-button-row\">\n      <button mat-raised-button (click)=\"reconnect()\">重新连接</button>\n      <button mat-raised-button color=\"primary\">Primary</button>\n      <button mat-raised-button color=\"accent\">Accent</button>\n      <button mat-raised-button color=\"warn\">Warn</button>\n      <button mat-raised-button disabled>Disabled</button>\n      <a mat-raised-button routerLink=\".\">Link</a>\n    </div>\n  </mat-tab>\n</mat-tab-group>"
+module.exports = "<mat-tab-group headerPosition=\"below\" animationDuration=\"0ms\" disableRipple=\"false\">\n  <mat-tab label=\"通讯录\">\n    <ng-template mat-tab-label>\n      <mat-icon class=\"example-tab-icon\">forum</mat-icon>\n    </ng-template>\n    <app-selectuser></app-selectuser>\n  </mat-tab>\n  <mat-tab label=\"发现\">\n    <ng-template mat-tab-label>\n      <mat-icon class=\"example-tab-icon\">assistant</mat-icon>\n    </ng-template>\n    <app-tab></app-tab>\n  </mat-tab>\n  <mat-tab label=\"我\">\n    <ng-template mat-tab-label>\n      <mat-icon class=\"example-tab-icon\">account_box</mat-icon>\n    </ng-template>\n    <mat-toolbar color=\"primary\">\n      <mat-toolbar-row>\n        <mat-icon class=\"example-icon example-spacer\"></mat-icon>\n        <span class=\"example-spacer\">我</span>\n        <mat-icon class=\"example-icon\"></mat-icon>\n      </mat-toolbar-row>\n    </mat-toolbar>\n    <div class=\"example-button-row\">\n      <button mat-raised-button (click)=\"reconnect()\">重新连接</button>\n      <button mat-raised-button color=\"primary\" (click)=\"deleteall()\">清空缓存</button>\n      <button mat-raised-button color=\"accent\">Accent</button>\n      <button mat-raised-button color=\"warn\">Warn</button>\n      <button mat-raised-button disabled>Disabled</button>\n      <a mat-raised-button routerLink=\".\">Link</a>\n    </div>\n  </mat-tab>\n</mat-tab-group>"
 
 /***/ }),
 
@@ -1046,11 +1157,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var TabsComponent = /** @class */ (function () {
-    function TabsComponent(WebsocketService, dialog, localstorage) {
+    function TabsComponent(WebsocketService, dialog, localstorage, snackBar) {
         this.WebsocketService = WebsocketService;
         this.dialog = dialog;
         this.localstorage = localstorage;
+        this.snackBar = snackBar;
     }
     TabsComponent.prototype.ngOnInit = function () {
     };
@@ -1075,6 +1188,16 @@ var TabsComponent = /** @class */ (function () {
             _this.WebsocketService.onclose();
         };
     };
+    TabsComponent.prototype.deleteall = function () {
+        this.localstorage.removeAll();
+        this.openSnackBar('缓存已清空', null);
+    };
+    TabsComponent.prototype.openSnackBar = function (message, action) {
+        this.snackBar.open(message, null, {
+            duration: 3000,
+            verticalPosition: "top"
+        });
+    };
     TabsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-tabs',
@@ -1083,7 +1206,8 @@ var TabsComponent = /** @class */ (function () {
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [projects_websocketchatlib_src_public_api__WEBPACK_IMPORTED_MODULE_3__["WebsocketchatService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"],
-            src_app_service_localstorage_service__WEBPACK_IMPORTED_MODULE_4__["LocalstorageService"]])
+            src_app_service_localstorage_service__WEBPACK_IMPORTED_MODULE_4__["LocalstorageService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSnackBar"]])
     ], TabsComponent);
     return TabsComponent;
 }());
@@ -1099,7 +1223,7 @@ var TabsComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar color=\"primary\">\r\n  <mat-toolbar-row>\r\n    <span class=\"example-spacer\"></span>\r\n    <span>认证登录</span>\r\n    <span class=\"example-spacer\"></span>\r\n  </mat-toolbar-row>\r\n</mat-toolbar>\r\n<div class=\"center\">\r\n  <mat-card class=\"example-card\">\r\n    <mat-card-header>\r\n      <div mat-card-avatar class=\"example-header-image\"></div>\r\n    </mat-card-header>\r\n    <mat-card-content>\r\n      <mat-list role=\"list\">\r\n        <mat-list-item role=\"listitem\">\r\n          <label>用户：</label>\r\n          <input class=\"grow margin\" matInput [(ngModel)]=\"user\" name=\"user\" placeholder=\"请输入用户名\" autocomplete=\"false\">\r\n        </mat-list-item>\r\n        <mat-list-item role=\"listitem\">\r\n          <label>密码：</label>\r\n          <input class=\"grow margin\" type=\"password\" matInput [(ngModel)]=\"password\" name=\"password\" placeholder=\"请输入密码\" autocomplete=\"false\">\r\n        </mat-list-item>\r\n        <mat-list-item role=\"listitem\">\r\n          <button class=\"grow buttonmargin\" mat-raised-button color=\"primary\" (click)=\"login()\">login</button>\r\n        </mat-list-item>\r\n      </mat-list>\r\n    </mat-card-content>\r\n  </mat-card>\r\n</div>"
+module.exports = "<mat-toolbar color=\"primary\">\r\n  <mat-toolbar-row>\r\n    <span class=\"example-spacer\"></span>\r\n    <span>认证登录</span>\r\n    <span class=\"example-spacer\"></span>\r\n  </mat-toolbar-row>\r\n</mat-toolbar>\r\n<div class=\"center\">\r\n  <mat-card class=\"example-card\">\r\n    <mat-card-header>\r\n      <div mat-card-avatar class=\"example-header-image\"></div>\r\n    </mat-card-header>\r\n    <mat-card-content>\r\n      <mat-list role=\"list\">\r\n        <mat-list-item role=\"listitem\">\r\n          <label>用户：</label>\r\n          <input class=\"grow margin\" matInput [(ngModel)]=\"user\" name=\"user\" placeholder=\"请输入用户名\" autocomplete=\"false\">\r\n        </mat-list-item>\r\n        <mat-list-item role=\"listitem\">\r\n          <label>密码：</label>\r\n          <input class=\"grow margin\" type=\"password\" matInput [(ngModel)]=\"password\" name=\"password\" placeholder=\"请输入密码\" autocomplete=\"false\">\r\n        </mat-list-item>\r\n        <mat-list-item role=\"listitem\">\r\n          <button class=\"grow buttonmargin\" mat-raised-button color=\"primary\" (click)=\"login()\">login</button>\r\n        </mat-list-item>\r\n        <mat-list-item role=\"listitem\">\r\n          <button class=\"grow buttonmargin\" mat-raised-button color=\"primary\" (click)=\"ant()\">ant tabs</button>\r\n        </mat-list-item>\r\n      </mat-list>\r\n    </mat-card-content>\r\n  </mat-card>\r\n</div>"
 
 /***/ }),
 
@@ -1165,6 +1289,7 @@ var LoginComponent = /** @class */ (function () {
                 this.WebsocketService.signInWithUserNameAndPassword(this.user, this.password)
                     .then(function (data) {
                     if (data) {
+                        _this.localstorage.set("authToken", data.authToken);
                         _this.WebsocketService.websocket.onopen = function () {
                             _this.WebsocketService.onopen();
                         };
@@ -1173,13 +1298,12 @@ var LoginComponent = /** @class */ (function () {
                             var msg = JSON.parse(message.data);
                             if (msg && msg.fromId) {
                                 var msgList = new Array();
-                                msgList = _this.localstorage.getArr(msg.fromId);
+                                msgList = _this.localstorage.getArr(data.authToken + msg.fromId);
                                 msgList.push(msg);
-                                _this.localstorage.setArr(msg.fromId, msgList);
+                                _this.localstorage.setArr(data.authToken + msg.fromId, msgList);
                                 _this.localstorage.msgEvent.emit();
                             }
                         };
-                        _this.localstorage.set("authToken", data.authToken);
                         _this.WebsocketService.websocket.onclose = function () {
                             _this.WebsocketService.onclose();
                         };
@@ -1196,6 +1320,9 @@ var LoginComponent = /** @class */ (function () {
                 return [2 /*return*/];
             });
         });
+    };
+    LoginComponent.prototype.ant = function () {
+        this.router.navigate(['/anttabs']);
     };
     LoginComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -1222,7 +1349,7 @@ var LoginComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<mat-toolbar color=\"primary\">\n  <mat-toolbar-row>\n    <mat-icon class=\"example-icon example-spacer\"></mat-icon>\n    <span class=\"example-spacer\">用户列表</span>\n    <mat-icon class=\"example-icon\"></mat-icon>\n  </mat-toolbar-row>\n</mat-toolbar>\n\n<div>\n    <mat-list *ngFor=\"let user of userList\" role=\"list\">\n      <mat-list-item role=\"listitem\"  (click)=\"select(user.userName)\">\n        <mat-icon>person</mat-icon>{{user.userName}}\n      </mat-list-item>\n      <mat-divider></mat-divider>\n    </mat-list>\n</div>"
+module.exports = "<mat-toolbar color=\"primary\">\n  <mat-toolbar-row>\n    <mat-icon class=\"example-icon example-spacer\"></mat-icon>\n    <span class=\"example-spacer\">用户列表</span>\n    <mat-icon class=\"example-icon\"></mat-icon>\n  </mat-toolbar-row>\n</mat-toolbar>\n\n<div>\n  <List *ngFor=\"let user of userList\" role=\"list\">\n    <SwipeAction style=\"background-color: gray\" [right]=\"right\" [left]=\"left\" (onOpen)=\"open()\" (onClose)=\"close()\">\n      <ListItem (click)=\"select(user.userName)\">\n        <div class=\"flesstyle\">\n          <mat-icon class=\"margin\">person</mat-icon><p>{{user.userName}}</p>\n        </div>\n      </ListItem>\n    </SwipeAction>\n    <mat-divider></mat-divider>\n  </List>\n</div>"
 
 /***/ }),
 
@@ -1233,7 +1360,7 @@ module.exports = "\n<mat-toolbar color=\"primary\">\n  <mat-toolbar-row>\n    <m
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".example-icon {\n  padding: 0 0px; }\n\n.example-spacer {\n  flex: 1 1 auto; }\n\n.footer {\n  position: fixed;\n  bottom: 0px;\n  left: 0px;\n  right: 0px; }\n\n.header {\n  position: fixed;\n  top: 0px;\n  left: 0px;\n  right: 0px; }\n\n.content {\n  position: fixed;\n  top: 56px;\n  bottom: 112px;\n  left: 0px;\n  right: 0px;\n  height: 100%; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvc2VsZWN0dXNlci9EOlxcd29ya3NwYWNlc1xcbXl3ZWJzb2NrZXRsaWIvc3JjXFxhcHBcXHNlbGVjdHVzZXJcXHNlbGVjdHVzZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxjQUFjLEVBQUE7O0FBR2hCO0VBQ0UsY0FBYyxFQUFBOztBQUdoQjtFQUNFLGVBQWM7RUFDZCxXQUFXO0VBQ1gsU0FBUztFQUNULFVBQVUsRUFBQTs7QUFHWjtFQUNFLGVBQWM7RUFDZCxRQUFRO0VBQ1IsU0FBUztFQUNULFVBQVUsRUFBQTs7QUFHWjtFQUNFLGVBQWM7RUFDZCxTQUFTO0VBQ1QsYUFBYTtFQUNiLFNBQVM7RUFDVCxVQUFVO0VBQ1YsWUFBWSxFQUFBIiwiZmlsZSI6InNyYy9hcHAvc2VsZWN0dXNlci9zZWxlY3R1c2VyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmV4YW1wbGUtaWNvbiB7XHJcbiAgcGFkZGluZzogMCAwcHg7XHJcbn1cclxuXHJcbi5leGFtcGxlLXNwYWNlciB7XHJcbiAgZmxleDogMSAxIGF1dG87XHJcbn1cclxuXHJcbi5mb290ZXIge1xyXG4gIHBvc2l0aW9uOmZpeGVkO1xyXG4gIGJvdHRvbTogMHB4O1xyXG4gIGxlZnQ6IDBweDtcclxuICByaWdodDogMHB4O1xyXG59XHJcblxyXG4uaGVhZGVyIHtcclxuICBwb3NpdGlvbjpmaXhlZDtcclxuICB0b3A6IDBweDtcclxuICBsZWZ0OiAwcHg7XHJcbiAgcmlnaHQ6IDBweDtcclxufVxyXG5cclxuLmNvbnRlbnQge1xyXG4gIHBvc2l0aW9uOmZpeGVkO1xyXG4gIHRvcDogNTZweDtcclxuICBib3R0b206IDExMnB4O1xyXG4gIGxlZnQ6IDBweDtcclxuICByaWdodDogMHB4O1xyXG4gIGhlaWdodDogMTAwJTtcclxufSJdfQ== */"
+module.exports = ".example-icon {\n  padding: 0 0px; }\n\n.example-spacer {\n  flex: 1 1 auto; }\n\n.footer {\n  position: fixed;\n  bottom: 0px;\n  left: 0px;\n  right: 0px; }\n\n.header {\n  position: fixed;\n  top: 0px;\n  left: 0px;\n  right: 0px; }\n\n.content {\n  position: fixed;\n  top: 56px;\n  bottom: 112px;\n  left: 0px;\n  right: 0px;\n  height: 100%; }\n\n.flesstyle {\n  display: flex; }\n\n.margin {\n  margin-left: 5px;\n  margin-right: 20px; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvc2VsZWN0dXNlci9EOlxcd29ya3NwYWNlc1xcbXl3ZWJzb2NrZXRsaWIvc3JjXFxhcHBcXHNlbGVjdHVzZXJcXHNlbGVjdHVzZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxjQUFjLEVBQUE7O0FBR2hCO0VBQ0UsY0FBYyxFQUFBOztBQUdoQjtFQUNFLGVBQWM7RUFDZCxXQUFXO0VBQ1gsU0FBUztFQUNULFVBQVUsRUFBQTs7QUFHWjtFQUNFLGVBQWM7RUFDZCxRQUFRO0VBQ1IsU0FBUztFQUNULFVBQVUsRUFBQTs7QUFHWjtFQUNFLGVBQWM7RUFDZCxTQUFTO0VBQ1QsYUFBYTtFQUNiLFNBQVM7RUFDVCxVQUFVO0VBQ1YsWUFBWSxFQUFBOztBQUdkO0VBQ0UsYUFBYSxFQUFBOztBQUdmO0VBQ0UsZ0JBQWdCO0VBQ2hCLGtCQUFrQixFQUFBIiwiZmlsZSI6InNyYy9hcHAvc2VsZWN0dXNlci9zZWxlY3R1c2VyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmV4YW1wbGUtaWNvbiB7XHJcbiAgcGFkZGluZzogMCAwcHg7XHJcbn1cclxuXHJcbi5leGFtcGxlLXNwYWNlciB7XHJcbiAgZmxleDogMSAxIGF1dG87XHJcbn1cclxuXHJcbi5mb290ZXIge1xyXG4gIHBvc2l0aW9uOmZpeGVkO1xyXG4gIGJvdHRvbTogMHB4O1xyXG4gIGxlZnQ6IDBweDtcclxuICByaWdodDogMHB4O1xyXG59XHJcblxyXG4uaGVhZGVyIHtcclxuICBwb3NpdGlvbjpmaXhlZDtcclxuICB0b3A6IDBweDtcclxuICBsZWZ0OiAwcHg7XHJcbiAgcmlnaHQ6IDBweDtcclxufVxyXG5cclxuLmNvbnRlbnQge1xyXG4gIHBvc2l0aW9uOmZpeGVkO1xyXG4gIHRvcDogNTZweDtcclxuICBib3R0b206IDExMnB4O1xyXG4gIGxlZnQ6IDBweDtcclxuICByaWdodDogMHB4O1xyXG4gIGhlaWdodDogMTAwJTtcclxufVxyXG5cclxuLmZsZXNzdHlsZSB7XHJcbiAgZGlzcGxheTogZmxleDtcclxufVxyXG5cclxuLm1hcmdpbiB7XHJcbiAgbWFyZ2luLWxlZnQ6IDVweDtcclxuICBtYXJnaW4tcmlnaHQ6IDIwcHg7XHJcbn0iXX0= */"
 
 /***/ }),
 
@@ -1251,15 +1378,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var websocketchatlib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! websocketchatlib */ "./dist/websocketchatlib/fesm5/websocketchatlib.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+
 
 
 
 
 var SelectuserComponent = /** @class */ (function () {
-    function SelectuserComponent(router, websocketService) {
+    function SelectuserComponent(router, websocketService, snackBar) {
+        var _this = this;
         this.router = router;
         this.websocketService = websocketService;
+        this.snackBar = snackBar;
         this.userList = new Array();
+        this.right = [
+            {
+                text: '删除',
+                onPress: function () { return _this.openSnackBar('删除', null); },
+                className: 'btnClass'
+            }
+        ];
+        this.left = [
+            {
+                text: '置顶',
+                onPress: function () { return _this.openSnackBar('置顶', null); },
+                style: { backgroundColor: '#108ee9', color: 'white' }
+            }
+        ];
     }
     SelectuserComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1275,6 +1420,18 @@ var SelectuserComponent = /** @class */ (function () {
     SelectuserComponent.prototype.select = function (userName) {
         this.router.navigate(['/chat', { id: userName }]);
     };
+    SelectuserComponent.prototype.openSnackBar = function (message, action) {
+        this.snackBar.open(message, null, {
+            duration: 1000,
+            verticalPosition: "top"
+        });
+    };
+    SelectuserComponent.prototype.open = function () {
+        console.log('open');
+    };
+    SelectuserComponent.prototype.close = function () {
+        console.log('close');
+    };
     SelectuserComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-selectuser',
@@ -1282,7 +1439,8 @@ var SelectuserComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./selectuser.component.scss */ "./src/app/selectuser/selectuser.component.scss")]
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
-            websocketchatlib__WEBPACK_IMPORTED_MODULE_2__["WebsocketchatService"]])
+            websocketchatlib__WEBPACK_IMPORTED_MODULE_2__["WebsocketchatService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatSnackBar"]])
     ], SelectuserComponent);
     return SelectuserComponent;
 }());
