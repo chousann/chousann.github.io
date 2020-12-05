@@ -7,7 +7,7 @@ window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogn
   || window.msSpeechRecognition || window.oSpeechRecognition;
 
 var config = {
-  wssHost: 'wss://moly.ngrok2.xiaomiqiu.cn'
+  wssHost: 'ws://moly.ngrok2.xiaomiqiu.cn/signaling'
   // wssHost: 'wss://example.com/myWebSocket'
 };
 var localVideoElem = null;
