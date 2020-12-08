@@ -6,6 +6,7 @@ window.RTCSessionDescription = window.RTCSessionDescription || window.mozRTCSess
 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition
   || window.msSpeechRecognition || window.oSpeechRecognition;
 
+var room = prompt('Enter room name:'); //弹出一个输入窗口
 var config = {
   wssHost: 'wss://moly.ngrok2.xiaomiqiu.cn/signaling'
   // wssHost: 'wss://example.com/myWebSocket'
@@ -17,6 +18,9 @@ var videoCallButton = null;
 var endCallButton = null;
 var peerConn = null;
 var wsc = new WebSocket(config.wssHost);
+wsc.onopen = function () {
+  wsc.send(JSON.stringify({ "create": room }));
+}
 var peerConnCfg = {
   'iceServers':
     [{ 'url': 'stun:stun.services.mozilla.com' },
@@ -33,7 +37,8 @@ function pageReady() {
     videoCallButton.removeAttribute("disabled");
     videoCallButton.addEventListener("click", initiateCall);
     endCallButton.addEventListener("click", function (evt) {
-      wsc.send(JSON.stringify({ "closeConnection": true }));
+      wsc.send(JSON.stringify({ "closeConnection": true, "room": room }));
+      endCall();
     });
   } else {
     alert("Sorry, your browser does not support WebRTC!")
@@ -46,6 +51,11 @@ function prepareCall() {
   peerConn.onicecandidate = onIceCandidateHandler;
   // once remote stream arrives, show it in the remote video element
   peerConn.onaddstream = onAddStreamHandler;
+  peerConn.onconnectionstatechange = function (ev) {
+    if(ev.currentTarget.connectionState === "disconnected"){
+      endCall();
+    }
+  }
 };
 
 // run start(true) to initiate a call
@@ -94,7 +104,7 @@ function createAndSendOffer() {
       var off = new RTCSessionDescription(offer);
       peerConn.setLocalDescription(new RTCSessionDescription(off),
         function () {
-          wsc.send(JSON.stringify({ "sdp": off }));
+          wsc.send(JSON.stringify({ "sdp": off, "room": room}));
         },
         function (error) { console.log(error); }
       );
@@ -108,7 +118,7 @@ function createAndSendAnswer() {
     function (answer) {
       var ans = new RTCSessionDescription(answer);
       peerConn.setLocalDescription(ans, function () {
-        wsc.send(JSON.stringify({ "sdp": ans }));
+        wsc.send(JSON.stringify({ "sdp": ans, "room": room }));
       },
         function (error) { console.log(error); }
       );
@@ -119,7 +129,7 @@ function createAndSendAnswer() {
 
 function onIceCandidateHandler(evt) {
   if (!evt || !evt.candidate) return;
-  wsc.send(JSON.stringify({ "candidate": evt.candidate }));
+  wsc.send(JSON.stringify({ "candidate": evt.candidate, "room": room }));
 };
 
 function onAddStreamHandler(evt) {
