@@ -8,7 +8,7 @@ window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogn
 
 var room = prompt('Enter room name:'); //弹出一个输入窗口
 var config = {
-  wssHost: 'wss://moly.ngrok2.xiaomiqiu.cn/signaling'
+  wssHost: 'wss://signaling.cnss.eu.org/signaling'
   // wssHost: 'wss://example.com/myWebSocket'
 };
 var localVideoElem = null;
