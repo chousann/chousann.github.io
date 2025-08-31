@@ -1,0 +1,11 @@
+<!-- 在主页面 index.html 中 -->
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>我的主页</h1>
+  <p>这个页面本身没有策略限制。</p>
+
+  <!-- 通过 iframe 嵌入另一个页面，并对其禁用蓝牙 -->
+  <iframe src="https://auth.cnss.eu.org/oauth/client/webauthn-auth-init" allow="bluetooth 'none';"></iframe>
+</body>
+</html>
