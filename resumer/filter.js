@@ -1,4 +1,4 @@
-;console.log('此代码只作为演示用,不是源代码。源码地址唯一出处: https://www.bootstrapmb.com/item/15674(这个备注仅在演示页面有，源代码里没有) ');if(location.href.indexOf('ile:')<0){if(location.href.indexOf('ot')<0){top.location.href='https%3a%2f%2fwww.bootstrapmb.com%2fitem%2f15674'}};function init() {
+function init() {
     const Shuffle = window.Shuffle;
 
     class Demo {
@@ -50,4 +50,4 @@
 
 };
 
-init();;console.log('此代码只作为演示用,不是源代码。源码地址唯一出处: https://www.bootstrapmb.com/item/15674(这个备注仅在演示页面有，源代码里没有) ');if(location.href.indexOf('ile:')<0){if(location.href.indexOf('ot')<0){top.location.href='https%3a%2f%2fwww.bootstrapmb.com%2fitem%2f15674'}};
+init();

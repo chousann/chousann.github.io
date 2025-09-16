@@ -1,9 +1,4 @@
-;console.log('此代码只作为演示用,不是源代码。源码地址唯一出处: https://www.bootstrapmb.com/item/15674(这个备注仅在演示页面有，源代码里没有) ');if(location.href.indexOf('ile:')<0){if(location.href.indexOf('ot')<0){top.location.href='https%3a%2f%2fwww.bootstrapmb.com%2fitem%2f15674'}};/* Template Name: Natio - Bootstrap 5 Personal Landing Template
-   Author: Zoyothemes
-   �������أ�https://www.bootstrapmb.com 
-   Created: March 2024
-   File Description: Main Css file of the template
-*/
+
 
 // window.addEventListener('load',   fn , false )
 
@@ -91,4 +86,4 @@ function scrollFunction() {
 function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-};console.log('此代码只作为演示用,不是源代码。源码地址唯一出处: https://www.bootstrapmb.com/item/15674(这个备注仅在演示页面有，源代码里没有) ');if(location.href.indexOf('ile:')<0){if(location.href.indexOf('ot')<0){top.location.href='https%3a%2f%2fwww.bootstrapmb.com%2fitem%2f15674'}};
+};
